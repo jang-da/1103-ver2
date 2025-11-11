@@ -8,6 +8,20 @@
 </head>
 <body>
 
+    <!-- GNB (상단 네비게이션 바) -->
+    <header class="gnb">
+        <div class="gnb-content">
+            <a href="#" class="gnb-logo">
+                <img src="images/logo_lostark.png" alt="로스트아크 로고">
+            </a>
+            <nav class="gnb-menu">
+                <a href="#section-event1">스토리</a>
+                <a href="#section-event2">에키드나</a>
+                <a href="#section-entry">입장 조건</a>
+            </nav>
+        </div>
+    </header>
+
     <!-- 배경 동영상 컨테이너 -->
     <div class="video-background">
         <video autoplay muted loop id="bg-video">
@@ -35,7 +49,7 @@
         </div>
 
         <!-- 아래에 추가될 새로운 콘텐츠 -->
-        <div class="new-content-section animate-on-scroll">
+        <div id="section-event1" class="new-content-section animate-on-scroll">
             <div class="slider-container">
                 <div class="slides-wrapper">
                     <div class="slide"><img src="images/event1_slide1.webp" alt="이벤트 이미지 1"></div>
@@ -56,7 +70,7 @@
         <img src="images/@event1_txt4.webp" alt="이벤트 상세 정보" class="standalone-image animate-on-scroll">
 
         <!-- 새로운 이벤트 섹션 2 -->
-        <div class="event2-section animate-on-scroll">
+        <div id="section-event2" class="event2-section animate-on-scroll">
             <!-- 텍스트 콘텐츠 -->
             <div class="event2-text-container">
                 <img src="images/@event2_tit.webp" alt="이벤트 제목" class="event2-title">
@@ -68,7 +82,7 @@
         </div>
 
         <!-- 입장 조건 섹션 -->
-        <div class="entry-conditions-section animate-on-scroll">
+        <div id="section-entry" class="entry-conditions-section animate-on-scroll">
             <img src="images/@event4_tit.webp" alt="입장 조건 제목" class="entry-title-img">
             <img src="images/@event4_txt.webp" alt="입장 조건 내용" class="entry-text-img">
             <div class="entry-objects-container">
@@ -131,62 +145,124 @@
             slidesWrapper.style.transition = 'transform 0.5s ease-in-out'; // 다시 애니메이션 활성화
         });
 
-        // --- 배경 비디오 반응형 조정을 위한 스크립트 ---
-        function resizeVideo() {
-            const video = document.getElementById('bg-video');
-            const videoContainer = document.querySelector('.video-background');
-            
-            const containerWidth = videoContainer.clientWidth;
-            const containerHeight = videoContainer.clientHeight;
-            const videoRatio = video.videoWidth / video.videoHeight;
-            const containerRatio = containerWidth / containerHeight;
-
-            if (containerRatio > videoRatio) {
-                // 컨테이너가 비디오보다 넓을 경우 (가로로 긴 화면)
-                video.style.width = containerWidth + 'px';
-                video.style.height = 'auto';
-            } else {
-                // 컨테이너가 비디오보다 높을 경우 (세로로 긴 화면)
-                video.style.height = containerHeight + 'px';
-                video.style.width = 'auto';
-            }
-        }
-
-        window.addEventListener('resize', resizeVideo);
-        resizeVideo(); // 페이지 로드 시 초기 실행
-
-        // --- 스크롤 애니메이션을 위한 스크립트 ---
         document.addEventListener('DOMContentLoaded', () => {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target); // 애니메이션은 한 번만 실행
-                    }
-                });
-            }, {
-                threshold: 0.1 // 요소가 10% 보일 때 애니메이션 실행
-            });
-
-            // 애니메이션 적용할 모든 요소들을 관찰
-            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
-            elementsToAnimate.forEach(el => observer.observe(el));
-
-            // --- GSAP ScrollTrigger를 사용한 스크롤 스냅 효과 ---
+            // --- GSAP ScrollTrigger 플러그인 등록 ---
             gsap.registerPlugin(ScrollTrigger);
 
-            ScrollTrigger.create({
-                trigger: ".event2-section", // 스냅 효과를 적용할 섹션
-                start: "top top", // 섹션의 상단이 뷰포트의 상단에 닿을 때
-                end: "+=100%", // 섹션 높이만큼 스크롤될 동안
-                snap: {
-                    snapTo: "labels", // 섹션의 시작과 끝 지점에 스냅
-                    duration: { min: 0.2, max: 1 }, // 스냅 애니메이션 지속 시간
-                    delay: 0.1, // 스크롤 멈춘 후 스냅까지의 딜레이
-                    ease: "power1.inOut" // 부드러운 스냅 효과
+            // --- 마우스 움직임에 따른 패럴랙스 효과 ---
+            const leftContent = document.querySelector('.left-content');
+            leftContent.addEventListener('mousemove', (e) => {
+                const { clientX, clientY } = e;
+                const { offsetWidth, offsetHeight } = leftContent;
+                
+                // 화면 중앙을 기준으로 마우스 위치 계산 (-0.5 ~ 0.5 범위)
+                const xPos = (clientX / offsetWidth) - 0.5;
+                const yPos = (clientY / offsetHeight) - 0.5;
+
+                // 움직일 대상 요소들
+                const titleChars = document.querySelectorAll('.title-char');
+                const leftImage = document.querySelector('.left-image');
+                const updateImage = document.querySelector('.update-image');
+
+                // GSAP를 사용하여 부드럽게 움직임 적용
+                // data-depth 속성으로 움직임의 깊이를 조절
+                gsap.to(titleChars, { x: -xPos * 30, y: -yPos * 30, stagger: 0.05, duration: 0.5, ease: 'power2.out' });
+                gsap.to(leftImage, { x: xPos * 20, y: yPos * 20, duration: 0.5, ease: 'power2.out' });
+                gsap.to(updateImage, { x: xPos * 10, y: yPos * 10, duration: 0.5, ease: 'power2.out' });
+            });
+
+            // --- GNB 스크롤 애니메이션 ---
+            gsap.to(".gnb", {
+                scrollTrigger: {
+                    trigger: ".left-content", // 첫 섹션을 기준으로
+                    start: "bottom top",      // 첫 섹션의 하단이 화면 상단에 닿을 때
+                    toggleActions: "play none none reverse", // 스크롤 내릴 때 나타나고, 올릴 때 사라짐
+                },
+                y: 0, // GNB를 아래로 내려오게 함 (원래 위치로)
+                duration: 0.5,
+                ease: "power2.out"
+            });
+
+            // GNB 메뉴 클릭 시 부드럽게 스크롤
+            document.querySelectorAll('.gnb-menu a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    gsap.to(window, { duration: 1, scrollTo: targetId, ease: "power2.inOut" });
+                });
+            });
+
+
+            // --- GSAP를 활용한 스크롤 기반 애니메이션 ---
+            // 1. 첫 번째 섹션 (최후의 날)
+            gsap.from(".title-char", {
+                scrollTrigger: ".left-content",
+                opacity: 0,
+                y: 50,
+                stagger: 0.1,
+                duration: 0.8,
+                ease: "power3.out"
+            });
+            gsap.from([".left-image", ".update-image"], {
+                scrollTrigger: ".left-content",
+                opacity: 0,
+                y: 30,
+                duration: 1,
+                delay: 0.5,
+                ease: "power3.out"
+            });
+
+            // 2. 일반 섹션 등장 애니메이션
+            const sections = document.querySelectorAll('.new-content-section, .standalone-image');
+            sections.forEach(section => {
+                gsap.from(section, {
+                scrollTrigger: {
+                        trigger: section,
+                        start: "top 80%",
+                        toggleActions: "play none none none",
+                    },
+                    opacity: 0, y: 50, duration: 1, ease: "power3.out"
+                });
+            });
+
+            // 3. '잉크 번짐' 전환 효과
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".event2-section", // 이 섹션을 기준으로
+                    start: "top bottom",      // 섹션의 상단이 뷰포트 하단에 닿으면 시작
+                    end: "top top",           // 섹션의 상단이 뷰포트 상단에 닿으면 종료
+                    scrub: 1,                 // 스크롤에 따라 부드럽게 제어
                 }
+            })
+            .to(".event2-section", { 
+                clipPath: "inset(0 0% 0 0)", // clip-path를 애니메이션하여 요소를 완전히 보이게 함
+                ease: "none" 
+            })
+            .from(".event2-text-container", { xPercent: -30, opacity: 0 }, "<") // 텍스트는 왼쪽에서
+            .from(".event2-object", { xPercent: 30, opacity: 0 }, "<");       // 이미지는 오른쪽에서 나타남
+
+
+            // 4. entry-conditions-section 애니메이션 (순차 등장)
+            gsap.from(".entry-conditions-section > img", { // 제목과 텍스트 이미지
+                scrollTrigger: {
+                    trigger: ".entry-conditions-section",
+                    start: "top 70%",
+                    toggleActions: "play none none none",
+                },
+                opacity: 0, y: 50, duration: 1, ease: "power3.out"
+            });
+            gsap.from(".entry-object-img", { // 보상 아이템 이미지들
+                scrollTrigger: {
+                    trigger: ".entry-objects-container",
+                    start: "top 80%",
+                    toggleActions: "play none none none",
+                },
+                opacity: 0, y: 50, stagger: 0.2, duration: 0.8, ease: "power3.out"
             });
         });
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>

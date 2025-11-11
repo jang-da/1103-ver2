@@ -8,6 +8,52 @@ body, html {
     /* height: 100%와 overflow: hidden을 제거하여 스크롤을 활성화합니다. */
 }
 
+/* --- GNB (상단 네비게이션 바) 스타일 --- */
+.gnb {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* 다른 모든 콘텐츠 위에 위치 */
+    background-color: rgba(10, 10, 10, 0.8); /* 반투명 배경 */
+    backdrop-filter: blur(10px); /* 배경 블러 처리 (모던한 느낌) */
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(-100%); /* 기본적으로 화면 위쪽에 숨겨둠 */
+}
+
+.gnb-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gnb-logo img {
+    height: 30px;
+    width: auto;
+}
+
+.gnb-menu {
+    display: flex;
+    gap: 40px;
+}
+
+.gnb-menu a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.gnb-menu a:hover {
+    color: #fff;
+}
+
 /* 배경 동영상 스타일 */
 .video-background {
     position: fixed; /* 화면에 고정 */
@@ -35,7 +81,7 @@ body, html {
     justify-content: flex-start; /* 콘텐츠를 위쪽으로 정렬 */
     align-items: center; /* 수평 중앙 정렬 */
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.6); /* 배경을 더 어둡게 하여 대비를 높임 */
+
     box-sizing: border-box; /* padding이 너비에 포함되도록 설정 */
 }
 
@@ -113,6 +159,12 @@ h1 {
 p {
     font-size: 1.2rem;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* 리빌 애니메이션을 위한 래퍼 스타일 */
+.reveal-wrapper {
+    overflow: hidden; /* 내부 요소가 밖으로 나가는 것을 숨김 */
+    /* 필요에 따라 padding, margin 등을 추가할 수 있습니다. */
 }
 
 /* 새로 추가된 콘텐츠 섹션 스타일 */
@@ -231,6 +283,9 @@ p {
     position: relative; /* 자식 요소의 absolute 포지셔닝 기준 */
     overflow: hidden; /* 섹션을 벗어나는 이미지 숨김 */
     padding-left: 15%; /* 다른 섹션과 왼쪽 정렬을 맞춤 */
+
+    /* '잉크 번짐' 효과를 위해 요소의 오른쪽 부분을 잘라냄 (초기 상태) */
+    clip-path: inset(0 100% 0 0);
 }
 
 .event2-text-container {
@@ -260,7 +315,7 @@ p {
     position: absolute; /* 부모(.event2-section) 기준으로 위치 지정 */
     right: -10vw; /* 화면 너비에 비례하여 위치 조절 */
     bottom: 0;
-    width: 70vw; /* 화면 너비에 비례하여 크기 조절 */
+    width: 75vw; /* 화면 너비에 비례하여 크기 조절 (약간 키워서 텍스트를 더 가리도록) */
     max-width: 1344px; /* 1920px 화면에서 70vw에 해당하는 값으로 최대 크기 제한 */
     z-index: 1; /* 텍스트보다 뒤에 있도록 설정 */
     opacity: 0.8; /* 배경과 자연스럽게 어우러지도록 투명도 조절 */
@@ -319,18 +374,20 @@ p {
 /* --- 입장 조건 섹션 스타일 --- */
 .entry-conditions-section {
     width: 100%;
+    height: 100vh; /* 섹션이 화면 전체 높이를 차지하도록 설정 */
     /* margin-bottom: 100px; */ /* 푸터와 맞닿도록 바깥 여백 제거 */
-    padding: 100px 40px 200px; /* 안쪽 여백(padding-bottom)을 늘려 공간 확보 */
+    padding: 50px 40px; /* 상하 패딩을 조정하여 중앙 정렬을 돕습니다. */
 
-    /* event2-section과 동일한 배경 이미지 적용 */
+    /* event2-section과 동일한 배경을 연결합니다. */
     background-image: url('images/bg_event2.webp');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    background-attachment: fixed; /* 배경을 화면에 고정하여 연결된 느낌을 줍니다. */
 
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    justify-content: center; /* 내부 콘텐츠를 수직 중앙으로 정렬 */
     align-items: center;
     gap: 30px; /* 내부 요소들 사이의 간격 */
 }
@@ -352,6 +409,11 @@ p {
     height: auto;
     transition: transform 0.3s ease, filter 0.3s ease;
     filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5)); /* 입체감을 위한 그림자 효과 */
+}
+
+.entry-object-img:hover {
+    transform: scale(1.1); /* 이미지를 1.1배 확대 */
+    filter: drop-shadow(0 0 15px rgba(0, 180, 255, 0.8)); /* 빛나는 효과 강화 */
 }
 
 /* --- 푸터 스타일 --- */
