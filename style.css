@@ -45,6 +45,8 @@ body, html {
     font-family: 'Noto Serif KR', serif; /* 폰트 변경 */
     color: #ccc;
     text-decoration: none;
+    font-size: 1rem;
+    font-weight: 5s00;
     font-size: 1.05rem; /* 폰트 크기 미세 조정 */
     font-weight: 500; /* 폰트 두께 (오타 수정) */
     letter-spacing: 0.5px; /* 자간 미세 조정 */
@@ -301,7 +303,7 @@ p {
     padding-left: 15%; /* 다른 섹션과 왼쪽 정렬을 맞춤 */
 
     /* '잉크 번짐' 효과를 위해 요소의 오른쪽 부분을 잘라냄 (초기 상태) */
-    clip-path: inset(0 100% 0 0);
+    /* clip-path: inset(0 100% 0 0); */ /* 인터랙션 비활성화를 위해 주석 처리 */
 }
 
 .event2-text-container {

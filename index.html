@@ -220,21 +220,21 @@
                 });
             });
 
-            // 3. '잉크 번짐' 전환 효과
-            gsap.timeline({
-                scrollTrigger: {
-                    trigger: ".event2-section", // 이 섹션을 기준으로
-                    start: "top bottom",      // 섹션의 상단이 뷰포트 하단에 닿으면 시작
-                    end: "top top",           // 섹션의 상단이 뷰포트 상단에 닿으면 종료
-                    scrub: 1,                 // 스크롤에 따라 부드럽게 제어
-                }
-            })
-            .to(".event2-section", { 
-                clipPath: "inset(0 0% 0 0)", // clip-path를 애니메이션하여 요소를 완전히 보이게 함
-                ease: "none" 
-            })
-            .from(".event2-text-container", { xPercent: -30, opacity: 0 }, "<") // 텍스트는 왼쪽에서
-            .from(".event2-object", { xPercent: 30, opacity: 0 }, "<");       // 이미지는 오른쪽에서 나타남
+            // // 3. '잉크 번짐' 전환 효과 (임시 비활성화)
+            // gsap.timeline({
+            //     scrollTrigger: {
+            //         trigger: ".event2-section", // 이 섹션을 기준으로
+            //         start: "top bottom",      // 섹션의 상단이 뷰포트 하단에 닿으면 시작
+            //         end: "top top",           // 섹션의 상단이 뷰포트 상단에 닿으면 종료
+            //         scrub: 1,                 // 스크롤에 따라 부드럽게 제어
+            //     }
+            // })
+            // .to(".event2-section", { 
+            //     clipPath: "inset(0 0% 0 0)", // clip-path를 애니메이션하여 요소를 완전히 보이게 함
+            //     ease: "none" 
+            // })
+            // .from(".event2-text-container", { xPercent: -30, opacity: 0 }, "<") // 텍스트는 왼쪽에서
+            // .from(".event2-object", { xPercent: 30, opacity: 0 }, "<");       // 이미지는 오른쪽에서 나타남
 
 
             // 4. entry-conditions-section 애니메이션 (순차 등장)
