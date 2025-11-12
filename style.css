@@ -8,6 +8,12 @@ body, html {
     /* height: 100%와 overflow: hidden을 제거하여 스크롤을 활성화합니다. */
 }
 
+/* 모바일 메뉴가 열렸을 때 배경 스크롤 방지 */
+body.gnb-open {
+    overflow: hidden;
+}
+
+
 /* --- GNB (상단 네비게이션 바) 스타일 --- */
 .gnb {
     position: fixed;
@@ -70,6 +76,12 @@ body, html {
 
 .gnb-gamestart:hover img {
     filter: brightness(1.2); /* 마우스 오버 시 밝아지는 효과 */
+}
+
+/* 모바일용 게임시작 버튼 (평소에는 숨김) */
+.gnb-gamestart-mobile {
+    display: none;
+    margin-top: 30px;
 }
 
 /* 배경 동영상 스타일 */
@@ -303,7 +315,7 @@ p {
     padding-left: 15%; /* 다른 섹션과 왼쪽 정렬을 맞춤 */
 
     /* '잉크 번짐' 효과를 위해 요소의 오른쪽 부분을 잘라냄 (초기 상태) */
-    /* clip-path: inset(0 100% 0 0); */ /* 인터랙션 비활성화를 위해 주석 처리 */
+    clip-path: inset(0 100% 0 0); /* 인터랙션 비활성화를 위해 주석 처리 */
 }
 
 .event2-text-container {
@@ -341,6 +353,78 @@ p {
 
 /* --- 반응형 디자인을 위한 미디어 쿼리 --- */
 @media (max-width: 1024px) {
+    /* --- GNB 모바일 스타일 --- */
+    .gnb-content {
+        padding: 0 20px; /* 모바일 화면 좌우 여백 줄임 */
+    }
+
+    .gnb-right {
+        gap: 20px; /* 로고와 버튼 사이 간격 줄임 */
+    }
+
+    .gnb-menu {
+        /* 메뉴를 화면 전체를 덮는 오버레이로 변경 */
+        position: fixed;
+        top: 70px; /* GNB 높이만큼 아래에서 시작 */
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 70px); /* GNB를 제외한 전체 높이 */
+        background-color: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+
+        /* 메뉴 항목을 세로로 배치 */
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 50px;
+
+        /* 평소에는 숨겨두고 오른쪽으로 밀어냄 */
+        transform: translateX(100%);
+        transition: transform 0.4s ease-in-out;
+    }
+
+    .gnb-menu.active {
+        transform: translateX(0); /* 활성화 시 제자리로 이동 */
+    }
+
+    .gnb-menu a {
+        font-size: 1.8rem; /* 모바일에서 메뉴 폰트 크기 키움 */
+        color: #fff;
+    }
+
+    .gnb-gamestart {
+        display: none; /* 데스크톱용 게임시작 버튼 숨김 */
+    }
+
+    .gnb-gamestart-mobile {
+        display: block; /* 모바일용 게임시작 버튼 표시 */
+    }
+
+    /* 햄버거 메뉴 토글 버튼 */
+    .gnb-toggle {
+        display: flex; /* 모바일에서만 보이도록 설정 */
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 24px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        z-index: 10;
+    }
+
+    .gnb-toggle span {
+        width: 30px;
+        height: 3px;
+        background: white;
+        border-radius: 10px;
+        transition: all 0.3s linear;
+        position: relative;
+        transform-origin: 1px;
+    }
+
     /* 첫 번째 콘텐츠 섹션 (슬라이더 + 텍스트 박스) */
     .new-content-section {
         flex-direction: column; /* 세로로 쌓이도록 변경 */
@@ -376,6 +460,11 @@ p {
         right: auto; /* 위치 초기화 */
         opacity: 0.5; /* 텍스트 뒤에 깔리는 느낌을 위해 투명도 조절 */
         margin-top: -20%; /* 텍스트와 겹치도록 조정 */
+    }
+
+    /* 데스크톱에서만 보이던 gnb-menu 숨김 처리 */
+    .gnb-right > .gnb-menu {
+        display: flex; /* flex 속성을 유지해야 내부 아이템 정렬이 가능 */
     }
 }
 
@@ -465,4 +554,22 @@ footer {
 .footer-text p {
     margin: 5px 0;
     font-size: 0.8rem;
+}
+
+/* 데스크톱 화면(1025px 이상)에서는 햄버거 버튼 숨기기 */
+@media (min-width: 1025px) {
+    .gnb-toggle {
+        display: none;
+    }
+}
+
+/* 햄버거 버튼 활성화(X자 모양) 스타일 */
+.gnb-toggle.active span:nth-child(1) {
+    transform: rotate(45deg);
+}
+.gnb-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+.gnb-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg);
 }

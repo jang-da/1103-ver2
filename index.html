@@ -18,10 +18,16 @@
             <a href="#" class="gnb-logo">
                 <img src="images/Lost_Ark_logo.png" alt="로스트아크 로고">
             </a>
+            <!-- 모바일용 햄버거 메뉴 버튼 -->
+            <button class="gnb-toggle" aria-label="메뉴 열기">
+                <span></span><span></span><span></span>
+            </button>
             <div class="gnb-right">
-                <nav class="gnb-menu">
+                <!-- 모바일 메뉴 컨테이너 -->
+                <nav class="gnb-menu" id="gnb-menu-links">
                     <a href="#section-event1">스토리</a>
                     <a href="#section-entry">입장 조건</a>
+                    <a href="#" class="gnb-gamestart-mobile"><img src="images/gamestart.webp" alt="게임 시작"></a>
                 </nav>
                 <a href="#" class="gnb-gamestart"><img src="images/gamestart.webp" alt="게임 시작"></a>
             </div>
@@ -152,6 +158,26 @@
             slidesWrapper.style.transition = 'transform 0.5s ease-in-out'; // 다시 애니메이션 활성화
         });
 
+        // --- 모바일 GNB 메뉴 토글 ---
+        const gnbToggle = document.querySelector('.gnb-toggle');
+        const gnbMenu = document.querySelector('.gnb-menu');
+        const gnbMenuLinks = document.querySelectorAll('#gnb-menu-links a');
+
+        gnbToggle.addEventListener('click', () => {
+            document.body.classList.toggle('gnb-open');
+            gnbToggle.classList.toggle('active');
+            gnbMenu.classList.toggle('active');
+        });
+
+        // 모바일 메뉴의 링크 클릭 시 메뉴 닫기
+        gnbMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                document.body.classList.remove('gnb-open');
+                gnbToggle.classList.remove('active');
+                gnbMenu.classList.remove('active');
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             // --- GSAP ScrollTrigger 플러그인 등록 ---
             gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -220,21 +246,21 @@
                 });
             });
 
-            // // 3. '잉크 번짐' 전환 효과 (임시 비활성화)
-            // gsap.timeline({
-            //     scrollTrigger: {
-            //         trigger: ".event2-section", // 이 섹션을 기준으로
-            //         start: "top bottom",      // 섹션의 상단이 뷰포트 하단에 닿으면 시작
-            //         end: "top top",           // 섹션의 상단이 뷰포트 상단에 닿으면 종료
-            //         scrub: 1,                 // 스크롤에 따라 부드럽게 제어
-            //     }
-            // })
-            // .to(".event2-section", { 
-            //     clipPath: "inset(0 0% 0 0)", // clip-path를 애니메이션하여 요소를 완전히 보이게 함
-            //     ease: "none" 
-            // })
-            // .from(".event2-text-container", { xPercent: -30, opacity: 0 }, "<") // 텍스트는 왼쪽에서
-            // .from(".event2-object", { xPercent: 30, opacity: 0 }, "<");       // 이미지는 오른쪽에서 나타남
+            // 3. '잉크 번짐' 전환 효과
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".event2-section", // 이 섹션을 기준으로
+                    start: "top bottom",      // 섹션의 상단이 뷰포트 하단에 닿으면 시작
+                    end: "top top",           // 섹션의 상단이 뷰포트 상단에 닿으면 종료
+                    scrub: 1,                 // 스크롤에 따라 부드럽게 제어
+                }
+            })
+            .to(".event2-section", { 
+                clipPath: "inset(0 0% 0 0)", // clip-path를 애니메이션하여 요소를 완전히 보이게 함
+                ease: "none" 
+            })
+            .from(".event2-text-container", { xPercent: -30, opacity: 0 }, "<") // 텍스트는 왼쪽에서
+            .from(".event2-object", { xPercent: 30, opacity: 0 }, "<");       // 이미지는 오른쪽에서 나타남
 
 
             // 4. entry-conditions-section 애니메이션 (순차 등장)
